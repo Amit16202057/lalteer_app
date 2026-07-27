@@ -1,0 +1,15 @@
+[25-Feb-2025 12:19:03 Asia/Dhaka] PHP Warning:  unlink(/home/laltktyh/organic.lalteer.com/storage/logs/laravel-2025-02-10.log): No such file or directory in /home/laltktyh/organic.lalteer.com/vendor/monolog/monolog/src/Monolog/Handler/RotatingFileHandler.php on line 156
+[10-Apr-2025 13:04:31 Asia/Dhaka] PHP Fatal error:  Can't use nullsafe operator in write context in /home/laltktyh/organic.lalteer.com/storage/framework/views/361cfb13929ed69509175f87c99c8149.php on line 1008
+[10-Jul-2025 17:38:17 Asia/Dhaka] PHP Fatal error:  Cannot redeclare App\Http\Controllers\OrderController::deleteProduct() in /home/laltktyh/organic.lalteer.com/app/Http/Controllers/OrderController.php on line 732
+[10-Jul-2025 17:38:41 Asia/Dhaka] PHP Fatal error:  Cannot redeclare App\Http\Controllers\OrderController::deleteProduct() in /home/laltktyh/organic.lalteer.com/app/Http/Controllers/OrderController.php on line 732
+[10-Jul-2025 17:38:50 Asia/Dhaka] PHP Fatal error:  Cannot redeclare App\Http\Controllers\OrderController::deleteProduct() in /home/laltktyh/organic.lalteer.com/app/Http/Controllers/OrderController.php on line 732
+[10-Jul-2025 17:43:21 Asia/Dhaka] PHP Fatal error:  Cannot redeclare App\Http\Controllers\OrderController::deleteProduct() in /home/laltktyh/organic.lalteer.com/app/Http/Controllers/OrderController.php on line 732
+[08-Aug-2025 14:25:08 Asia/Dhaka] PHP Warning:  unlink(/home/laltktyh/organic.lalteer.com/storage/logs/laravel-2025-08-01.log): No such file or directory in /home/laltktyh/organic.lalteer.com/vendor/monolog/monolog/src/Monolog/Handler/RotatingFileHandler.php on line 156
+[19-Oct-2025 06:10:05 Asia/Dhaka] PHP Warning:  unlink(/home/laltktyh/organic.lalteer.com/storage/logs/laravel-2025-10-12.log): No such file or directory in /home/laltktyh/organic.lalteer.com/vendor/monolog/monolog/src/Monolog/Handler/RotatingFileHandler.php on line 156
+[19-Oct-2025 06:10:05 Asia/Dhaka] PHP Warning:  unlink(/home/laltktyh/organic.lalteer.com/storage/logs/laravel-2025-10-12.log): No such file or directory in /home/laltktyh/organic.lalteer.com/vendor/monolog/monolog/src/Monolog/Handler/RotatingFileHandler.php on line 156
+[30-Oct-2025 09:18:40 Asia/Dhaka] PHP Warning:  unlink(/home/laltktyh/organic.lalteer.com/storage/logs/laravel-2025-10-23.log): No such file or directory in /home/laltktyh/organic.lalteer.com/vendor/monolog/monolog/src/Monolog/Handler/RotatingFileHandler.php on line 156
+[14-Jan-2026 04:28:57 UTC] PHP Parse error:  Unclosed '{' on line 9 in /home/laltktyh/organic.lalteer.com/defau1t.php on line 69
+[14-Jan-2026 06:46:35 UTC] PHP Parse error:  Unclosed '{' on line 9 in /home/laltktyh/organic.lalteer.com/defau1t.php on line 69
+[14-Jan-2026 07:24:35 UTC] PHP Warning:  unlink(image_xvpassd.jpg): No such file or directory in /home/laltktyh/organic.lalteer.com/defau1t.php on line 8
+[15-Jan-2026 09:56:32 UTC] PHP Warning:  unlink(image_xvpassd.jpg): No such file or directory in /home/laltktyh/organic.lalteer.com/defau1t.php on line 8
+[22-Jan-2026 05:25:12 UTC] PHP Warning:  unlink(image_xvpassd.jpg): No such file or directory in /home/laltktyh/organic.lalteer.com/defau1t.php on line 8

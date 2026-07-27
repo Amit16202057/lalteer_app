@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://organic.lalteer.com/sitemap.xml

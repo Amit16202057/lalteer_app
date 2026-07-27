@@ -1,0 +1,431 @@
+@extends('auth.layouts.authentication')
+
+@section('content')
+    @php
+        $user = auth()->user();
+        $user_avatar = null;
+        $carts = [];
+        if ($user && $user->avatar_original != null) {
+            $user_avatar = uploaded_asset($user->avatar_original);
+        }
+        $system_language = get_system_language();
+    @endphp
+    @include('frontend.inc.nav')
+    <style>
+        .mySlides {
+            display: none;
+        }
+
+        img {
+            vertical-align: middle;
+        }
+
+        /* Slideshow container */
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
+        }
+
+        /* Caption text */
+        .text {
+            color: #f2f2f2;
+            font-size: 15px;
+            padding: 8px 12px;
+            position: absolute;
+            bottom: 8px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Number text (1/3 etc) */
+        .numbertext {
+            color: #f2f2f2;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+        }
+
+        /* The dots/bullets/indicators */
+        .dot {
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        .active {
+            background-color: #717171;
+        }
+
+        /* Fading animation */
+        .fade {
+            animation-name: fade;
+            animation-duration: 1.5s;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: .4
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        /* On smaller screens, decrease text size */
+        @media only screen and (max-width: 300px) {
+            .text {
+                font-size: 11px
+            }
+        }
+
+        @media(max-width: 768px) {
+            .user-login-page{
+                margin-top: 225px;
+            }
+        }
+    </style>
+    <section class="breadcrumb-section">
+        <div class="product-details-breadcrumb position-relative text-center">
+            <img src="{{ static_asset('assets/img/Frame 1171276523.png') }}" alt="Banner Image" class="w-100"
+                style="height: 200px; object-fit: cover;">
+
+            <!-- Wrapper for Text Elements -->
+            <div class="breadcrumb-text position-absolute"
+                style="top: 50%; left: 50%; transform: translate(-50%, -50%); color: white;">
+                <h2 style="font-size: 26px;">{{ translate('Login / Registration') }}</h2>
+                <p class="opacity-80" style="font-size: 16px; margin-top: 8px;">{{ translate('Please fill your details to access your
+                    account') }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- aiz-main-wrapper -->
+    <div class="aiz-main-wrapper d-flex flex-column justify-content-center bg-white">
+        <section class="bg-white overflow-hidden" style="min-height:100vh;">
+            <div class="row">
+                <!-- Left Side-->
+                <div class="col-xxl-6 col-lg-7">
+                    <div class="right-content">
+                        <div class="row align-items-center justify-content-center justify-content-lg-start">
+                            <div class="col-xxl-12 p-4 p-lg-5">
+                                <!-- Site Icon -->
+                                {{-- <div class="size-48px mb-3 mx-auto mx-lg-0">
+                                    <img src="{{ uploaded_asset(get_setting('site_icon')) }}"
+                                        alt="{{ translate('Site Icon') }}" class="img-fit h-100">
+                                </div> --}}
+                                <!-- Titles -->
+                                {{-- <div class="text-center text-lg-left">
+                                    <h1 class="fs-20 fs-md-24 fw-700 text-primary" style="text-transform: uppercase;">
+                                        {{ translate('Welcome Back !') }}</h1>
+                                    <h5 class="fs-14 fw-400 text-dark">{{ translate('Login to your account') }}</h5>
+                                </div> --}}
+                                <!-- Login form -->
+                                <div class="pt-3 pt-lg-4 bg-white user-login-page">
+                                    <div class="">
+                                        <form class="form-default loginForm" role="form" action="{{ route('login') }}"
+                                            method="POST">
+                                            @csrf
+
+                                            <!-- Email or Phone -->
+                                            @if (addon_is_activated('otp_system'))
+                                                <div class="form-group phone-form-group mb-1">
+                                                    <label for="phone"
+                                                        class="fs-15 fw-700 text-soft-dark">{{ translate('Phone') }}</label>
+                                                    <input type="tel" id="phone-code"
+                                                        class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }} rounded-1"
+                                                        value="{{ old('phone') }}" placeholder="" name="phone"
+                                                        autocomplete="off">
+                                                </div>
+
+                                                <input type="hidden" name="country_code" value="">
+
+                                                <div class="form-group email-form-group mb-1 d-none">
+                                                    <label for="email"
+                                                        class="fs-15 fw-700 text-soft-dark">{{ translate('Email Address') }}</label>
+                                                    <input type="email"
+                                                        class="form-control rounded-1 {{ $errors->has('email') ? ' is-invalid' : '' }}"
+                                                        value="{{ old('email') }}"
+                                                        placeholder="{{ translate('johndoe@example.com') }}" name="email"
+                                                        id="email" autocomplete="off">
+                                                    @if ($errors->has('email'))
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $errors->first('email') }}</strong>
+                                                        </span>
+                                                    @endif
+                                                </div>
+
+                                                <div class="form-group text-right">
+                                                    <button class="btn btn-link p-0 text-primary" type="button"
+                                                        onclick="toggleEmailPhone(this)"><i>*{{ translate('Use Email Instead') }}</i></button>
+                                                </div>
+                                            @else
+                                                <div class="form-group">
+                                                    <label for="email"
+                                                        class="fs-15 fw-700 text-soft-dark">{{ translate('Email Address') }}</label>
+                                                    <input type="email"
+                                                        class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} rounded-1"
+                                                        value="{{ old('email') }}"
+                                                        placeholder="{{ translate('johndoe@example.com') }}" name="email"
+                                                        id="email" autocomplete="off">
+                                                    @if ($errors->has('email'))
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $errors->first('email') }}</strong>
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                            <div class="password-login-block">
+                                                <!-- password -->
+                                                <div class="form-group">
+                                                    <label for="password"
+                                                        class="fs-15 fw-700 text-soft-dark">{{ translate('Password') }}</label>
+                                                    <div class="position-relative">
+                                                        <input type="password"
+                                                            class="form-control rounded-1 {{ $errors->has('password') ? ' is-invalid' : '' }}"
+                                                            placeholder="{{ translate('Password') }}" name="password"
+                                                            id="password">
+                                                        <i class="password-toggle las la-2x la-eye"></i>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <!-- Remember Me -->
+                                                    <div class="col-5">
+                                                        <label class="aiz-checkbox">
+                                                            <input type="checkbox" name="remember"
+                                                                {{ old('remember') ? 'checked' : '' }}>
+                                                            <span
+                                                                class="has-transition fs-12 fw-400 text-gray-dark hov-text-primary">{{ translate('Remember Me') }}</span>
+                                                            <span class="aiz-square-check"></span>
+                                                        </label>
+                                                    </div>
+                                                    <!-- Forgot password -->
+                                                    <div class="col-7 text-right">
+                                                        @if (get_setting('login_with_otp'))
+                                                            <a href="javascript:void(0);"
+                                                                class="text-reset fs-15 fw-400 text-gray-dark hov-text-primary toggle-login-with-otp"
+                                                                onclick="toggleLoginPassOTP(this)">{{ translate('Login With OTP') }}
+                                                                / </a>
+                                                        @endif
+                                                        <a href="{{ route('password.request') }}"
+                                                            class="text-reset fs-15 fw-400 text-gray-dark hov-text-primary"><u>{{ translate('Forgot password?') }}</u></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Submit Button -->
+                                            <div class="mb-4 mt-4">
+                                                <button type="submit"
+                                                    class="btn btn-primary btn-block fw-700 fs-15 rounded-2 submit-button">{{ translate('Login') }}</button>
+                                            </div>
+                                        </form>
+
+                                        {{-- <div>
+                                            <div class="text-center">
+                                                <span>or login with</span>
+                                            </div>
+                                            <div class="d-flex felx-row justify-content-center mt-3 mb-2">
+                                                <span class="d-flex flex-row p-1"
+                                                    style="margin-right: 10px; border: 1px solid rgb(216, 216, 216);">
+                                                    <i class="fa-brands fa-facebook text-primary fs-20"
+                                                        style="margin-right: 5px;"></i>
+                                                    <span style="margin">Facebook</span>
+                                                </span>
+                                                <span class="d-flex flex-row p-1"
+                                                    style="margin-right: 10px; border: 1px solid rgb(216, 216, 216);">
+                                                    <i class="fa-brands fa-google text-danger fs-20"
+                                                        style="margin-right: 5px;"></i>
+                                                    <span>Google</span>
+                                                </span>
+
+                                            </div>
+                                        </div> --}}
+
+                                        <!-- DEMO MODE -->
+                                        @if (env('DEMO_MODE') == 'On')
+                                            <div class="mb-4">
+                                                <table class="table table-bordered mb-0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{{ translate('Customer Account') }}</td>
+                                                            <td>
+                                                                <button class="btn btn-info btn-sm"
+                                                                    onclick="autoFillCustomer()">{{ translate('Copy credentials') }}</button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @endif
+
+                                        <!-- Social Login -->
+                                        @if (get_setting('google_login') == 1 ||
+                                                get_setting('facebook_login') == 1 ||
+                                                get_setting('twitter_login') == 1 ||
+                                                get_setting('apple_login') == 1)
+                                            <div class="text-center mb-3">
+                                                <span
+                                                    class="bg-white fs-12 text-gray">{{ translate('Or Login With') }}</span>
+                                            </div>
+                                            <ul class="list-inline social colored text-center mb-4">
+                                                @if (get_setting('facebook_login') == 1)
+                                                    <li class="list-inline-item">
+                                                        <a href="{{ route('social.login', ['provider' => 'facebook']) }}"
+                                                            class="facebook">
+                                                            <i class="lab la-facebook-f"></i>
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                                @if (get_setting('google_login') == 1)
+                                                    <li class="list-inline-item">
+                                                        <a href="{{ route('social.login', ['provider' => 'google']) }}"
+                                                            class="google">
+                                                            <i class="lab la-google"></i>
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                                @if (get_setting('twitter_login') == 1)
+                                                    <li class="list-inline-item">
+                                                        <a href="{{ route('social.login', ['provider' => 'twitter']) }}"
+                                                            class="twitter">
+                                                            <i class="lab la-twitter"></i>
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                                @if (get_setting('apple_login') == 1)
+                                                    <li class="list-inline-item">
+                                                        <a href="{{ route('social.login', ['provider' => 'apple']) }}"
+                                                            class="apple">
+                                                            <i class="lab la-apple"></i>
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                            </ul>
+                                        @endif
+                                    </div>
+
+                                    <!-- Register Now -->
+                                    <p class="fs-12 text-gray mb-0 text-center">
+                                        {{ translate('Dont have an account?') }}
+                                        <a href="{{ route('user.registration') }}"
+                                            class="ml-2 fs-14 fw-700 animate-underline-primary"><u>{{ translate('Register') }}</u></a>
+                                    </p>
+                                    <!-- Go Back -->
+                                    {{-- <a href="{{ url()->previous() }}"
+                                        class="mt-3 fs-14 fw-700 d-flex align-items-center text-primary"
+                                        style="max-width: fit-content;">
+                                        <i class="las la-arrow-left fs-20 mr-1"></i>
+                                        {{ translate('Back to Previous Page') }}
+                                    </a> --}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side -->
+                <div class="col-xxl-6 col-lg-5 pt-5 px-5">
+                    <div class="rounded-3 px-5" style="background-color: #CFE661">
+                        {{-- <img src="{{ uploaded_asset(get_setting('customer_login_page_image')) }}" alt=""
+                            class="img-fit h-100"> --}}
+
+@php
+    $lang = app()->getLocale(); // 👈 get current language
+
+    // Use current language for dynamic data
+    $login_imgs = json_decode(get_setting('login_info_images', null, $lang), true) ?? [];
+    $login_titles = json_decode(get_setting('login_info_title1', null, $lang), true) ?? [];
+    $login_designations = json_decode(get_setting('login_info_designation', null, $lang), true) ?? [];
+    $login_descriptions = json_decode(get_setting('login_info_des', null, $lang), true) ?? [];
+
+    $max_count = max(count($login_imgs), count($login_titles), count($login_designations), count($login_descriptions));
+@endphp
+
+
+<div class="slideshow-container">
+    @for ($i = 0; $i < $max_count; $i++)
+        <div class="mySlides fade">
+            <div class="pt-5">
+                <img src="{{ isset($login_imgs[$i]) ? uploaded_asset($login_imgs[$i]) : static_asset('assets/img/default.png') }}"
+                     alt="" class="d-flex align-items-center mx-auto img-circle"
+                     style="width: 116px; height: 116px;">
+            </div>
+            <div class="pt-2 pb-5">
+                <div style="position: absolute; z-index: 1;">
+                    <img src="{{ static_asset('assets/img/first cotation 2.png') }}" alt="">
+                </div>
+                <div class="bg-white py-4 rounded-2 custom-box position-relative">
+                    <span class="d-flex flex-column">
+                        <span class="opacity-80 fs-17 text-center">
+                            {{ $login_titles[$i] ?? 'No Title' }}
+                        </span>
+                        <span class="opacity-80 fs-17 text-center">
+                            {{ $login_designations[$i] ?? 'No Designation' }}
+                        </span>
+                    </span>
+                    <p class="opacity-80 pt-3 px-3 justify-content">
+                        {{ $login_descriptions[$i] ?? 'No Description Available.' }}
+                    </p>
+                </div>
+                <div style="position: absolute; z-index: 1; right: 0; margin-top: -25px !important; margin-right: 5px;">
+                    <img src="{{ static_asset('assets/img/first cotation 1.png') }}" alt="">
+                </div>
+            </div>
+        </div>
+    @endfor
+</div>
+
+                        <br>
+
+                        <div style="text-align:center">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+    </div>
+@endsection
+
+@section('script')
+    <script type="text/javascript">
+        function autoFillCustomer() {
+            $('#email').val('customer@example.com');
+            $('#password').val('123456');
+        }
+
+
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {
+                slideIndex = 1
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+            setTimeout(showSlides, 2000); // Change image every 2 seconds
+        }
+    </script>
+@endsection

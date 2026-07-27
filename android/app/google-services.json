@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "945398247279",
+    "project_id": "lalteer-3ee4a",
+    "storage_bucket": "lalteer-3ee4a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945398247279:android:9a72f6dce9102f5da4829a",
+        "android_client_info": {
+          "package_name": "com.app.lalteer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzZDssbljAhjEf0OXRdJEUKqp-RWe0TzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
